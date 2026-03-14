@@ -1,0 +1,42 @@
+version: '3.9'
+
+services:
+  web:
+    image: nginx:latest
+    container_name: nginx_php
+    ports:
+      - "4500:4500"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./php:/var/www/html
+    depends_on:
+      - php
+    networks:
+      - app-network
+
+  php:
+    build: ./php
+    container_name: php_fpm
+    volumes:
+      - ./php:/var/www/html
+    networks:
+      - app-network
+
+  db:
+    image: mysql:8.0
+    container_name: mysql_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: Senha123
+      MYSQL_DATABASE: meubanco
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    networks:
+      - app-network
+
+networks:
+  app-network:
+
+volumes:
+  db_data:

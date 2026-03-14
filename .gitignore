@@ -1,0 +1,8 @@
+# Docker volumes
+db/db_data/
+
+# Logs e cache
+*.log
+
+# Configurações temporárias do sistema
+*.swp
